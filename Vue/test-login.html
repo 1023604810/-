@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录测试</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>登录测试</h1>
+    <form id="loginForm">
+        <div>
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" value="admin">
+        </div>
+        <div>
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password" value="admin">
+        </div>
+        <button type="submit">登录</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            console.log('开始登录，用户名为:', username);
+            
+            axios.post('http://localhost:8081/api/login', {
+                username: username,
+                password: password
+            })
+            .then((response) => {
+                console.log('登录响应:', response);
+                document.getElementById('result').innerHTML = '<h2>登录成功！</h2><pre>' + JSON.stringify(response.data, null, 2) + '</pre>';
+            })
+            .catch((error) => {
+                console.error('登录请求失败:', error);
+                document.getElementById('result').innerHTML = '<h2>登录失败！</h2><pre>' + JSON.stringify(error, null, 2) + '</pre>';
+            });
+        });
+    </script>
+</body>
+</html>
